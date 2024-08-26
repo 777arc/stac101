@@ -1,1 +1,239 @@
-TEST
+STAC101.com is a single page devoted to explaining STAC in a concise manner for those who are new to STAC.  
+
+There are exabytes of spatial data of Earth in existence but it is spread across many different formats, including bespoke methods of cataloging it and being able to query for specific data of interest, usually different for each data provider.  SpatioTemporal Asset Catalog (STAC) is an open specification that defines a common metadata format, which wraps around any geospatial data about the earth.  This enables interoperability between different data providers and tools, and allows for a more efficient way to combine data, store data, and search for data.  STAC provides a standard way to catalog imagery, LiDAR, SAR, Full Motion Video, Hyperspectral and beyond.  STAC standardizes metadata fields, naming conventions, query language, and catalog structure.  STAC has evolved into an ecosystem, that includes the specifications themselves, tooling, applications, and a vibrant community of users and developers.
+
+STAC itself is not a file format, it's a way to link/catalog files.  Give a list of the primative file formats that you tend to see. 
+
+The core STAC spec is focused on spatial and temporal data, but there are extensions for others like SAR.  Go into what spatial and temporal means.
+
+Starting from the bottom and moving up-
+
+## Asset
+
+In STAC lingo, an Asset is just a single data file, essentially anything that isn't a piece of STAC metadata.  A list of common Asset types include:
+
+- Cloud Optimized GeoTIFF (COG)
+- TIFF
+- FlatGeobuf
+- GeoJSON
+- GeoPackage
+- HDF
+- HDF5
+- HTML
+- JPEG
+- JPEG2000
+- JSON
+- Google Earth KML
+- GeoParquet
+- PDF
+- PNG
+- Plaintext
+- XML
+- ZARR
+(from https://pystac.readthedocs.io/en/stable/api/media_type.html)
+
+
+## Item
+
+A STAC Item represents a set of Assets (data files) for a specific location at a specific time.  The Item metadata is best understood through an example, shown below.  Every field except stac_extensions and collection is a required field for an Item.  The id can be any string, but it must be unique, in most cases this id will come from the origin of the data.  The type (which always equals Feature for STAC Items), geometry, and properties fields come straight from GeoJSON, allowing a STAC Item to also be interpreted as a GeoJSON object, for convinience.  The example Item below only includes one Asset (a TIFF file) but Items often contain multiple Assets.  We will go over links and collections later.
+
+{
+    "stac_version": "1.0.0",
+    "stac_extensions": ["eo"],
+    "id": "California-Wildfire-SpreadRate-2020-Summer-00010m",
+    "type": "Feature",
+    "geometry": {
+       "type": "MultiPolygon",
+       "coordinates": [[[[-124.410934052232, 40.4384109955972],
+                         [-124.116812491114, 41.0014565370056],
+                         [-124.166186288324, 41.1388432379689],
+                         [-124.067807727823, 41.4699151445539]]]]
+    },
+    "properties": {},
+    "bbox": [32.3622708084737, -124.518229214556, 42.0242173371539, -113.191354530481],
+    "assets": {
+        "SpreadRate": {
+           "href": "https://storage.googleapis.com/cfo-public/wildfire/California-Wildfire-SpreadRate-2020-Summer-00010m.tif",
+           "type": "image/tiff; application=geotiff; profile=cloud-optimized"
+        }
+    },
+    "collection": "wildfire",
+    "links":[
+    {
+       "rel":"root",
+       "href":"https://storage.googleapis.com/cfo-public/wildfire/collection.json",
+       "type":"application/json"
+    },
+    {
+       "rel":"parent",
+       "href":"https://storage.googleapis.com/cfo-public/wildfire/collection.json",
+       "type":"application/json"
+    },
+    {
+       "rel":"self",
+       "href":"https://storage.googleapis.com/cfo-public/wildfire/California-Wildfire-SpreadRate-2020-Summer-00010m.json",
+       "type":"application/json"
+    },
+    {
+       "rel":"collection",
+       "href":"https://storage.googleapis.com/cfo-public/wildfire/collection.json",
+       "type":"application/json"
+    }
+    ]
+ }
+
+STAC Spec Reference:
+https://github.com/radiantearth/stac-spec/blob/master/item-spec/item-spec.md
+https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md
+
+
+
+
+## Collection
+
+A STAC Collection is like a virtual folder/directory that groups Items or other Collections/Catalogs, as well as provides additional metadata common to all of the Items in the Collection.  Every field shown below is required except stac_extensions and title for some reason, one would have thought title would be required and description optional (*shrug*).  Note how type is always set to Collection for a Collection.  The extent describes the spatial and temporal extent of the Items within the Collection.  The most important part of the Collection metadata is the Links, which include the list of Items in the Collection, but also parent/child/root links, see below for more information about Links.
+
+{
+    "stac_version": "1.0.0",
+    "stac_extensions": [],
+    "type": "Collection",
+    "id": "wildfire",
+    "title": "Wildfire likelihood, intensity, and severity metrics",
+    "description": "Predictions of the geography and intensity of simulated wildfires, as well as post-fire burn severity measurements. Read more at https://the.forestobservatory.com/data",
+    "license": "proprietary"
+    "extent": {
+        "spatial": {
+          "bbox": [
+            [
+              -124.41093405223192,
+              32.53343961618115,
+              -114.12969535404741,
+              41.99925769689654
+            ]
+          ]
+        },
+        "temporal": {
+          "interval": [
+            [
+              "2016-10-01T18:00:00Z",
+              "2020-10-01T18:00:00Z"
+            ]
+          ]
+        }
+      },
+    "links": [
+      {
+        "rel": "root",
+        "href": "https://storage.googleapis.com/cfo-public/catalog.json",
+        "type": "application/json"
+      },
+      {
+        "rel": "item",
+        "href": "https://storage.googleapis.com/cfo-public/wildfire/California-Wildfire-BurnProbability-2020-Summer-00010m.json",
+        "type": "application/json"
+      },
+      {
+        "rel": "item",
+        "href": "https://storage.googleapis.com/cfo-public/wildfire/California-Wildfire-BurnSeverity-2016-Fall-00010m.json",
+        "type": "application/json"
+      },
+      {
+        "rel": "item",
+        "href": "https://storage.googleapis.com/cfo-public/wildfire/California-Wildfire-BurnSeverity-2017-Fall-00010m.json",
+        "type": "application/json"
+      },
+      {
+        "rel": "item",
+        "href": "https://storage.googleapis.com/cfo-public/wildfire/California-Wildfire-BurnSeverity-2018-Fall-00010m.json",
+        "type": "application/json"
+      },
+      {
+        "rel": "item",
+        "href": "https://storage.googleapis.com/cfo-public/wildfire/California-Wildfire-BurnSeverity-2019-Fall-00010m.json",
+        "type": "application/json"
+      },
+      {
+        "rel": "item",
+        "href": "https://storage.googleapis.com/cfo-public/wildfire/California-Wildfire-BurnSeverity-2020-Fall-00010m.json",
+        "type": "application/json"
+      },
+      {
+        "rel": "item",
+        "href": "https://storage.googleapis.com/cfo-public/wildfire/California-Wildfire-FlameLength-2020-Summer-00010m.json",
+        "type": "application/json"
+      },
+      {
+        "rel": "item",
+        "href": "https://storage.googleapis.com/cfo-public/wildfire/California-Wildfire-Hazard-2020-Summer-00010m.json",
+        "type": "application/json"
+      },
+      {
+        "rel": "item",
+        "href": "https://storage.googleapis.com/cfo-public/wildfire/California-Wildfire-SpreadRate-2020-Summer-00010m.json",
+        "type": "application/json"
+      },
+      {
+        "rel": "license",
+        "href": "https://forestobservatory.com/legal.html"
+      },
+      {
+        "rel": "parent",
+        "href": "https://storage.googleapis.com/cfo-public/catalog.json",
+        "type": "application/json"
+      },
+      {
+        "rel": "self",
+        "href": "https://storage.googleapis.com/cfo-public/wildfire/collection.json",
+        "type": "application/json"
+      }
+    ]
+  }
+
+STAC Spec Reference:
+https://github.com/radiantearth/stac-spec/blob/master/collection-spec/collection-spec.md
+
+
+
+
+## Catalog
+
+A Catalog is just a Collection with less fields.  It only contains id, title, description, and links.  Not sure why it exists, since it is a subset of Collection anyone creating tooling or applications would have a much easier time just implementing Collection and converting all Catalogs into Collections for the sake of display/query.  
+
+Go over what a "static catalog" is 
+
+STAC Spec Reference:
+https://github.com/radiantearth/stac-spec/blob/master/catalog-spec/catalog-spec.md
+
+## Links
+
+Within STAC, Links describe relationships with other entities (either other STAC entities or external resources).  For example, an Item should include which Collection it's part of, and a Collection should include all of the Items within the Collection.  When Links show up in the metadata, it is as a list, and each object in the list must include a href and rel field (the other optional fields are mainly API oriented and we won't dive into those here).  Because STAC is so http/web oriented, it is expected that every STAC component has a URL for itself.  The rel field defines the relationship between the current document and the linked document, with options of: self, root, parent, child, collection, item.  
+
+STAC Spec Reference:
+https://github.com/radiantearth/stac-spec/blob/master/commons/links.md
+
+
+What is Radiant Earth
+
+# External Resources
+
+STAC Spec - https://github.com/radiantearth/stac-spec/
+
+STAC's two main About page's https://stacspec.org/en/about/  and  https://stacspec.org/en/about/stac-spec/
+STAC Tutorials - https://stacspec.org/en/tutorials/
+List of other STAC tutorials out there - https://stacindex.org/learn
+
+STAC Browser is a Vue-based browser for STAC catalogs.
+
+https://stacindex.org/ecosystem has the full list, but important ones include
+
+Python:
+- PySTAC
+- stactools
+- stac-fastapi and pystac-client
+- pygeoapi has STAC support
+
+JavaScript:
+- stac-js
+- Stack Browser
+- stac-server
+
