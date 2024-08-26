@@ -212,7 +212,16 @@ STAC Spec Reference:
 https://github.com/radiantearth/stac-spec/blob/master/commons/links.md
 
 
-What is Radiant Earth
+# Cloud Optimized GeoTIFF (COG)
+
+Before diving into COGs, let's first look at GeoTIFFs.  GeoTIFF is a metadata standard which lets you embed geospatial information within a TIFF file.  A TIFF file is just an image file format for raster (a.k.a. bitmap) 2D images.  TIFF images may be uncompressed, compressed with lossless compression, or compressed with lossy compression.  Metadata within TIFFs are organized into tags.  
+
+The Cloud Optimized GeoTIFF (COG) standard was created to allow users/software to fetch small pieces of a GeoTIFF file hosted on a HTTP webserver, instead of having to download the entire file everytime.  There is nothing cloud specific about the standard, but it was designed around the notion of storing enormous amounts of geospatial data in cloud storage.  From a technical perspective, a COG is just a special type of GeoTIFF file that includes a particular layout of data and metadata, allowing clients to predict which range of bytes they need to download.  This lets the client use the HTTP GET range request (which gets a subset of bytes from a file), to get only the portions of the GeoTIFF they need.  A COG can be treated as a normal GeoTIFF by software that does not specifically support COG features.  COGs are almost always compressed TIFFs for more efficient online transfer.
+
+COGs also make use of GeoTIFF's ability to store data in tiles, instead of storing long stripes of data.  With stripes, the whole file (or a huge portion of it) needs to be downloaded even if you just want one small section of lat/lon.  GeoTIFFs also have a mechanism called "overviews" which are downsampled versions of the same image (e.g., a thumbnail).  A single GeoTIFF can have many overviews, to match different zoom levels.  Even though these increase the size of the overall file, they are able to be served fast.
+
+
+# What is Radiant Earth
 
 # External Resources
 
