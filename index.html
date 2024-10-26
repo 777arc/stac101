@@ -1,42 +1,98 @@
-STAC101.com is a single page devoted to explaining STAC in a concise manner for those who are new to STAC.  
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-There are exabytes of spatial data of Earth in existence but it is spread across many different formats, including bespoke methods of cataloging it and being able to query for specific data of interest, usually different for each data provider.  SpatioTemporal Asset Catalog (STAC) is an open specification that defines a common metadata format, which wraps around any geospatial data about the earth.  This enables interoperability between different data providers and tools, and allows for a more efficient way to combine data, store data, and search for data.  STAC provides a standard way to catalog imagery, LiDAR, SAR, Full Motion Video, Hyperspectral and beyond.  STAC standardizes metadata fields, naming conventions, query language, and catalog structure.  STAC has evolved into an ecosystem, that includes the specifications themselves, tooling, applications, and a vibrant community of users and developers.
+    <link rel="stylesheet" href="bootstrap.min.css" />
 
-STAC itself is not a file format, it's a way to link/catalog files.  Give a list of the primative file formats that you tend to see. 
+    <style>
+      code {
+        font-family: Consolas, "courier new";
+        color: crimson;
+        background-color: #f1f1f1;
+        padding: 2px;
+        font-size: 105%;
+      }
+    </style>
 
-The core STAC spec is focused on spatial and temporal data, but there are extensions for others like SAR.  Go into what spatial and temporal means.
+    <title>STAC 101</title>
+  </head>
 
-Starting from the bottom and moving up-
+  <body>
+    <section class="jumbotron text-center">
+      <div class="container">
+        <h2 class="jumbotron-heading">STAC101.com</h2>
+        <p class="lead text-muted">A single page devoted to explaining STAC in a concise manner for those who are new to STAC</p>
+        <p>
+          <a href="#" class="btn btn-primary my-2">STAC Spec</a>
+          <a href="https://stacspec.org/en/" class="btn btn-secondary my-2">stacspec.org</a>
+        </p>
+      </div>
+    </section>
 
-## Asset
+    <div class="album py-5 bg-light">
+      <div class="container">
+        <p>
+          There are exabytes of spatial data of Earth in existence but it is spread across many different formats, including bespoke methods of
+          cataloging it and being able to query for specific data of interest, usually different for each data provider. SpatioTemporal Asset Catalog
+          (STAC) is an open specification that defines a common metadata format, which wraps around any geospatial data about the earth. This enables
+          interoperability between different data providers and tools, and allows for a more efficient way to combine data, store data, and search for
+          data. STAC provides a standard way to catalog imagery, LiDAR, SAR, Full Motion Video, Hyperspectral and beyond. STAC standardizes metadata
+          fields, naming conventions, query language, and catalog structure. STAC has evolved into an ecosystem, that includes the specifications
+          themselves, tooling, applications, and a vibrant community of users and developers.
+        </p>
 
-In STAC lingo, an Asset is just a single data file, essentially anything that isn't a piece of STAC metadata.  A list of common Asset types include:
+        <p>STAC itself is not a file format, it's a way to link/catalog files. Give a list of the primative file formats that you tend to see.</p>
 
-- Cloud Optimized GeoTIFF (COG)
-- TIFF
-- FlatGeobuf
-- GeoJSON
-- GeoPackage
-- HDF
-- HDF5
-- HTML
-- JPEG
-- JPEG2000
-- JSON
-- Google Earth KML
-- GeoParquet
-- PDF
-- PNG
-- Plaintext
-- XML
-- ZARR
-(from https://pystac.readthedocs.io/en/stable/api/media_type.html)
+        <p>
+          The core STAC spec is focused on spatial and temporal data, but there are extensions for others like SAR. Go into what spatial and temporal
+          means.
+        </p>
 
+        <p>Starting from the bottom and moving up</p>
 
-## Item
+        <h2>Asset</h2>
 
-A STAC Item represents a set of Assets (data files) for a specific location at a specific time.  The Item metadata is best understood through an example, shown below.  Every field except stac_extensions and collection is a required field for an Item.  The id can be any string, but it must be unique, in most cases this id will come from the origin of the data.  The type (which always equals Feature for STAC Items), geometry, and properties fields come straight from GeoJSON, allowing a STAC Item to also be interpreted as a GeoJSON object, for convinience.  The example Item below only includes one Asset (a TIFF file) but Items often contain multiple Assets.  We will go over links and collections later.
+        In STAC lingo, an Asset is just a single data file, essentially anything that isn't a piece of STAC metadata. A list of common Asset types
+        include:
 
+        <ul>
+          <li>Cloud Optimized GeoTIFF (COG)</li>
+          <li>TIFF</li>
+          <li>FlatGeobuf</li>
+          <li>GeoJSON</li>
+          <li>GeoPackage</li>
+          <li>HDF</li>
+          <li>HDF5</li>
+          <li>HTML</li>
+          <li>JPEG</li>
+          <li>JPEG2000</li>
+          <li>JSON</li>
+          <li>Google Earth KML</li>
+          <li>GeoParquet</li>
+          <li>PDF</li>
+          <li>PNG</li>
+          <li>Plaintext</li>
+          <li>XML</li>
+          <li>ZARR</li>
+        </ul>
+        (from https://pystac.readthedocs.io/en/stable/api/media_type.html)
+
+        <h2>Item</h2>
+
+        <p>
+          A STAC Item represents a set of Assets (data files) for a specific location at a specific time. The Item metadata is best understood through
+          an example, shown below. Every field except stac_extensions and collection is a required field for an Item. The id can be any string, but it
+          must be unique, in most cases this id will come from the origin of the data. The type (which always equals Feature for STAC Items),
+          geometry, and properties fields come straight from GeoJSON, allowing a STAC Item to also be interpreted as a GeoJSON object, for
+          convinience. The example Item below only includes one Asset (a TIFF file) but Items often contain multiple Assets. We will go over links and
+          collections later.
+        </p>
+
+        <pre>
+<code>
 {
     "stac_version": "1.0.0",
     "stac_extensions": ["eo"],
@@ -81,18 +137,28 @@ A STAC Item represents a set of Assets (data files) for a specific location at a
     }
     ]
  }
+</code>
+</pre>
 
-STAC Spec Reference:
-https://github.com/radiantearth/stac-spec/blob/master/item-spec/item-spec.md
-https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md
+        <h2>STAC Spec Reference:</h2>
+        <ul>
+          <li>https://github.com/radiantearth/stac-spec/blob/master/item-spec/item-spec.md</li>
+          <li>https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md</li>
+        </ul>
 
+        <h2>Collection</h2>
 
+        <p>
+          A STAC Collection is like a virtual folder/directory that groups Items or other Collections/Catalogs, as well as provides additional
+          metadata common to all of the Items in the Collection. Every field shown below is required except stac_extensions and title for some reason,
+          one would have thought title would be required and description optional (*shrug*). Note how type is always set to Collection for a
+          Collection. The extent describes the spatial and temporal extent of the Items within the Collection. The most important part of the
+          Collection metadata is the Links, which include the list of Items in the Collection, but also parent/child/root links, see below for more
+          information about Links.
+        </p>
 
-
-## Collection
-
-A STAC Collection is like a virtual folder/directory that groups Items or other Collections/Catalogs, as well as provides additional metadata common to all of the Items in the Collection.  Every field shown below is required except stac_extensions and title for some reason, one would have thought title would be required and description optional (*shrug*).  Note how type is always set to Collection for a Collection.  The extent describes the spatial and temporal extent of the Items within the Collection.  The most important part of the Collection metadata is the Links, which include the list of Items in the Collection, but also parent/child/root links, see below for more information about Links.
-
+        <pre>
+<code>
 {
     "stac_version": "1.0.0",
     "stac_extensions": [],
@@ -188,83 +254,195 @@ A STAC Collection is like a virtual folder/directory that groups Items or other 
       }
     ]
   }
+</code>
+</pre>
 
-STAC Spec Reference:
-https://github.com/radiantearth/stac-spec/blob/master/collection-spec/collection-spec.md
+        <a href="https://github.com/radiantearth/stac-spec/blob/master/collection-spec/collection-spec.md">STAC Spec Reference</a>
 
+        <h2>Catalog</h2>
 
+        <p>
+          A Catalog is just a Collection with less fields. It only contains id, title, description, and links. Not sure why it exists, since it is a
+          subset of Collection anyone creating tooling or applications would have a much easier time just implementing Collection and converting all
+          Catalogs into Collections for the sake of display/query.
+        </p>
 
+        <p>Go over what a "static catalog" is</p>
 
+        <a href="https://github.com/radiantearth/stac-spec/blob/master/catalog-spec/catalog-spec.md">STAC Spec Reference</a>
 
-## Catalog
+        <h2>Links</h2>
 
-A Catalog is just a Collection with less fields.  It only contains id, title, description, and links.  Not sure why it exists, since it is a subset of Collection anyone creating tooling or applications would have a much easier time just implementing Collection and converting all Catalogs into Collections for the sake of display/query.  
+        <p>
+          Within STAC, Links describe relationships with other entities (either other STAC entities or external resources). For example, an Item
+          should include which Collection it's part of, and a Collection should include all of the Items within the Collection. When Links show up in
+          the metadata, it is as a list, and each object in the list must include a href and rel field (the other optional fields are mainly API
+          oriented and we won't dive into those here). Because STAC is so http/web oriented, it is expected that every STAC component has a URL for
+          itself. The rel field defines the relationship between the current document and the linked document, with options of: self, root, parent,
+          child, collection, item.
+        </p>
 
-Go over what a "static catalog" is 
+        <a href="https://github.com/radiantearth/stac-spec/blob/master/commons/links.md">STAC Spec Reference</a>
 
-STAC Spec Reference:
-https://github.com/radiantearth/stac-spec/blob/master/catalog-spec/catalog-spec.md
+        <h2>Cloud Optimized GeoTIFF (COG)</h2>
 
-## Links
+        <p>
+          Before diving into COGs, let's first look at GeoTIFFs. GeoTIFF is a metadata standard which lets you embed geospatial information within a
+          TIFF file. A TIFF file is just an image file format for raster (a.k.a. bitmap) 2D images. TIFF images may be uncompressed, compressed with
+          lossless compression, or compressed with lossy compression. Metadata within TIFFs are organized into tags.
+        </p>
 
-Within STAC, Links describe relationships with other entities (either other STAC entities or external resources).  For example, an Item should include which Collection it's part of, and a Collection should include all of the Items within the Collection.  When Links show up in the metadata, it is as a list, and each object in the list must include a href and rel field (the other optional fields are mainly API oriented and we won't dive into those here).  Because STAC is so http/web oriented, it is expected that every STAC component has a URL for itself.  The rel field defines the relationship between the current document and the linked document, with options of: self, root, parent, child, collection, item.  
+        <p>
+          The Cloud Optimized GeoTIFF (COG) standard was created to allow users/software to fetch small pieces of a GeoTIFF file hosted on a HTTP
+          webserver, instead of having to download the entire file everytime. There is nothing cloud specific about the standard, but it was designed
+          around the notion of storing enormous amounts of geospatial data in cloud storage. From a technical perspective, a COG is just a special
+          type of GeoTIFF file that includes a particular layout of data and metadata, allowing clients to predict which range of bytes they need to
+          download. This lets the client use the HTTP GET range request (which gets a subset of bytes from a file), to get only the portions of the
+          GeoTIFF they need. A COG can be treated as a normal GeoTIFF by software that does not specifically support COG features. COGs are almost
+          always compressed-type TIFFs for more efficient online transfer.
+        </p>
 
-STAC Spec Reference:
-https://github.com/radiantearth/stac-spec/blob/master/commons/links.md
+        <p>
+          COGs also make use of GeoTIFF's ability to store data in tiles, instead of storing long stripes of data. With stripes, the whole file (or a
+          huge portion of it) needs to be downloaded even if you just want one small section of lat/lon. GeoTIFFs also have a mechanism called
+          "overviews" which are downsampled lower-resolution versions of the same image (e.g., a thumbnail, but there are typically many zoom levels).
+          A single GeoTIFF can have many overviews, to match different zoom levels. Even though these increase the size of the overall file, they are
+          able to be served fast. A TIFF already has a mechanism to have multiple images within the same file; each image requires an "image file
+          directory" which is a little piece of metadata (one per image) that contains information like where in the file the image starts, and for
+          COG it includes tile offsets. In a normal TIFF the image file directory data is usually scattered throughout the file, but a COG requires
+          all of the image file directory data to be at the beginning of the file, right after the TIFF header, so that an application only needs to
+          read the beginning of the file to get a mapping of where each tile begins (both in terms of tile offset and bytes into the file).
+        </p>
 
+        <h2>GeoParquet</h2>
 
-# Cloud Optimized GeoTIFF (COG)
+        <p>
+          GeoParquet is a format that is similar to COG, but is based on the Apache Parquet file format. Parquet is a columnar storage format that is
+          optimized for reading and writing large datasets. Parquet is used in many big data processing systems, including Apache Hadoop and Apache
+          Spark. Parquet is designed to be efficient for both read and write operations, and is optimized for use in distributed systems. Parquet is a
+          binary file format that stores data in columns, rather than rows. This allows for more efficient data compression and encoding, and can
+          result in faster query performance. Parquet is designed to work well with complex data types, including nested data structures and arrays.
+          Parquet is a self-describing file format, meaning that it includes metadata that describes the structure of the data stored in the file.
+          This metadata is stored in a footer at the end of the file, and includes information about the schema of the data, as well as statistics
+          that can be used to optimize query performance. Parquet is designed to be extensible, and supports the use of custom metadata and
+          compression algorithms. Parquet is widely used in the big data ecosystem, and is supported by many different tools and frameworks.
+          GeoParquet is a specialized version of Parquet that is optimized for geospatial data. GeoParquet includes support for storing geospatial
+          data types, such as points, lines, and polygons, as well as raster data. GeoParquet is designed to work well with geospatial data processing
+          tools, such as GDAL and GeoPandas. GeoParquet is a self-describing file format, and includes metadata that describes the geospatial data
+          stored in the file. This metadata includes information about the coordinate reference system (CRS) of the data, as well as other geospatial
+          properties, such as bounding boxes and spatial indexes. GeoParquet is designed to be efficient for reading and writing geospatial data, and
+          is optimized for use in distributed systems. GeoParquet is a binary file format, and is designed to be fast and efficient for processing
+          large volumes of geospatial data. GeoParquet is designed to be interoperable with other geospatial data formats, and can be used in
+          conjunction with other file formats, such as GeoTIFF and Shapefile. GeoParquet is an open source project, and is actively developed and
+          maintained by the geos
+        </p>
 
-Before diving into COGs, let's first look at GeoTIFFs.  GeoTIFF is a metadata standard which lets you embed geospatial information within a TIFF file.  A TIFF file is just an image file format for raster (a.k.a. bitmap) 2D images.  TIFF images may be uncompressed, compressed with lossless compression, or compressed with lossy compression.  Metadata within TIFFs are organized into tags.  
+        <h2>NetCDF</h2>
 
-The Cloud Optimized GeoTIFF (COG) standard was created to allow users/software to fetch small pieces of a GeoTIFF file hosted on a HTTP webserver, instead of having to download the entire file everytime.  There is nothing cloud specific about the standard, but it was designed around the notion of storing enormous amounts of geospatial data in cloud storage.  From a technical perspective, a COG is just a special type of GeoTIFF file that includes a particular layout of data and metadata, allowing clients to predict which range of bytes they need to download.  This lets the client use the HTTP GET range request (which gets a subset of bytes from a file), to get only the portions of the GeoTIFF they need.  A COG can be treated as a normal GeoTIFF by software that does not specifically support COG features.  COGs are almost always compressed-type TIFFs for more efficient online transfer.
+        <p>
+          NetCDF (Network Common Data Form) is a set of data formats for storing array-oriented scientific data, particularly geophysical data. The
+          file extension for netCDF is ".nc". NetCDF is designed to be self-describing, meaning that the data stored in a netCDF file includes
+          metadata that describes the structure of the data, starting with a header which describes the layout of the rest of the file. NetCDF
+          metadata includes information about the dimensions, variables, and attributes of the data, as well as information about the coordinate
+          reference system (CRS) of the data. NetCDF is designed to be efficient for reading and writing large volumes of data, and is optimized for
+          use in distributed systems. NetCDF is a binary file format, and is designed to be fast and efficient for processing large volumes of data.
+          NetCDF is often considered the scientific standard for multi-dimensional data, there are lots of tools to manipulate netCDF files, from
+          command line utililities like Climate Data Operators (CDO) to python modules like xarray. One notable trait of NetCDF files is their
+          potentially larger size compared to specialized archive formats due to their dataset-specific characteristics. Later versions of netCDF use
+          HDF5 under the hood.
+        </p>
 
-COGs also make use of GeoTIFF's ability to store data in tiles, instead of storing long stripes of data.  With stripes, the whole file (or a huge portion of it) needs to be downloaded even if you just want one small section of lat/lon.  GeoTIFFs also have a mechanism called "overviews" which are downsampled lower-resolution versions of the same image (e.g., a thumbnail, but there are typically many zoom levels).  A single GeoTIFF can have many overviews, to match different zoom levels.  Even though these increase the size of the overall file, they are able to be served fast.  A TIFF already has a mechanism to have multiple images within the same file; each image requires an "image file directory" which is a little piece of metadata (one per image) that contains information like where in the file the image starts, and for COG it includes tile offsets.  In a normal TIFF the image file directory data is usually scattered throughout the file, but a COG requires all of the image file directory data to be at the beginning of the file, right after the TIFF header, so that an application only needs to read the beginning of the file to get a mapping of where each tile begins (both in terms of tile offset and bytes into the file).  
+        <h2>Zarr and GeoZarr</h2>
 
-# GeoParquet
+        <p>
+          Zarr is an open standard for storing large multidimensional arrays, particularly for scientific data. Zarr is designed to be efficient for
+          reading and writing large volumes of data, and is optimized for use in distributed systems like the cloud. Zarr divides its data into
+          chunks, for faster random access. This also allows multiple read or write operations to efficiently occur to a Zarr array in parallel. Zarr
+          is a binary file format, and is self-describing similar to netCDF. Zarr's design was influenced by HDF5, and it includes similar features
+          for metadata, for example, arrays can be grouped into named hierarchies and annotated with key-value metadata stored alongside the array.
+        </p>
 
-GeoParquet is a format that is similar to COG, but is based on the Apache Parquet file format.  Parquet is a columnar storage format that is optimized for reading and writing large datasets.  Parquet is used in many big data processing systems, including Apache Hadoop and Apache Spark.  Parquet is designed to be efficient for both read and write operations, and is optimized for use in distributed systems.  Parquet is a binary file format that stores data in columns, rather than rows.  This allows for more efficient data compression and encoding, and can result in faster query performance.  Parquet is designed to work well with complex data types, including nested data structures and arrays.  Parquet is a self-describing file format, meaning that it includes metadata that describes the structure of the data stored in the file.  This metadata is stored in a footer at the end of the file, and includes information about the schema of the data, as well as statistics that can be used to optimize query performance.  Parquet is designed to be extensible, and supports the use of custom metadata and compression algorithms.  Parquet is widely used in the big data ecosystem, and is supported by many different tools and frameworks.  GeoParquet is a specialized version of Parquet that is optimized for geospatial data.  GeoParquet includes support for storing geospatial data types, such as points, lines, and polygons, as well as raster data.  GeoParquet is designed to work well with geospatial data processing tools, such as GDAL and GeoPandas.  GeoParquet is a self-describing file format, and includes metadata that describes the geospatial data stored in the file.  This metadata includes information about the coordinate reference system (CRS) of the data, as well as other geospatial properties, such as bounding boxes and spatial indexes.  GeoParquet is designed to be efficient for reading and writing geospatial data, and is optimized for use in distributed systems.  GeoParquet is a binary file format, and is designed to be fast and efficient for processing large volumes of geospatial data.  GeoParquet is designed to be interoperable with other geospatial data formats, and can be used in conjunction with other file formats, such as GeoTIFF and Shapefile.  GeoParquet is an open source project, and is actively developed and maintained by the geos
+        <p>
+          GeoZarr Spec aims to provide a geospatial extension to the Zarr specification, for storing multidimensional georeferenced grid of geospatial
+          observations, both rasters and vector data.
+        </p>
 
-# NetCDF
+        <h2>HDF5</h2>
 
+        <p>
+          Hierarchical Data Format (HDF) is a set of file formats designed to store and organize large amounts of data. Like many of the other formats
+          discussed, HDF5 is self-describing, meaning that the data stored in an HDF5 file includes metadata that describes the structure of the data.
+          It's older and tends to be slower than formats like Zarr, especially in a distributed/cloud setting.
+        </p>
 
+        <h2>GDAL</h2>
 
-# GDAL
+        <p>
+          Geospatial Data Abstraction Library (GDAL) is a FOSS library for reading and writing raster and vector geospatial data formats, it helps
+          with the translation of data from different file formats, data types, and map projections. The GDAL library is used within both FOSS
+          software (e.g., QGIS) and commercial software (e.g., ESRI ArcGIS). GDAL supports dozens of [raster
+          formats](https://gdal.org/drivers/raster/index.html) and [vector formats](https://gdal.org/drivers/vector/index.html), including GeoTIFF. By
+          using GDAL, you can create software that supports all of these formats; GDAL abstracts the complexities of dealing with various file formats
+          and geospatial data types, and all you have to learn is a single consistent API. GDAL is written in C++ and has bindings for Python, Java,
+          and other languages. GDAL is the backbone of many geospatial software packages, and is used in many cloud services for geospatial data
+          processing. GDAL is also used in many geospatial data processing pipelines, including those that create COGs.
+        </p>
 
-Geospatial Data Abstraction Library (GDAL) is a FOSS library for reading and writing raster and vector geospatial data formats, it helps with the translation of data from different file formats, data types, and map projections.  The GDAL library is used within both FOSS software (e.g., QGIS) and commercial software (e.g., ESRI ArcGIS).  GDAL supports dozens of [raster formats](https://gdal.org/drivers/raster/index.html) and [vector formats](https://gdal.org/drivers/vector/index.html), including GeoTIFF.  By using GDAL, you can create software that supports all of these formats; GDAL abstracts the complexities of dealing with various file formats and geospatial data types, and all you have to learn is a single consistent API.  GDAL is written in C++ and has bindings for Python, Java, and other languages.  GDAL is the backbone of many geospatial software packages, and is used in many cloud services for geospatial data processing.  GDAL is also used in many geospatial data processing pipelines, including those that create COGs.
+        <h2>Datacube</h2>
 
-# Datacube
+        <p>
+          Raster datacubes have an x-y (or lat-lon) dimension as well as temporal (time) dimension. Conceptually speaking, several COGs that cover the
+          same geometry but at different times can be thought of as a datacube, but typically datacube data is a single file that contains all of the
+          data for a given area and time period, e.g., a NetCDF or zarr file.
+        </p>
 
-Raster datacubes have an x-y (or lat-lon) dimension as well as temporal (time) dimension.  Conceptually speaking, several COGs that cover the same geometry but at different times can be thought of as a datacube, but typically datacube data is a single file that contains all of the data for a given area and time period, e.g., a NetCDF or zarr file.
+        <p>
+          Vector datacubes, on the other hand, are arrays that have one or more spatial dimensions that maps to a set of 2D vector geometries (either
+          points, lines, or polygons). As an example consider a time series of precipitation values across hundreds of weather stations, each with
+          their own lat/lon. You still have a datacube with three dimensions (x, y, time), but the x-y pairs are points (the weather station
+          coordinates) each with a precipitation value, instead of MxN pixels of RGB. Formats like NetCDF or Zarr are popular for storing this type of
+          multidimensional array data. GDAL includes a https://gdal.org/api/index.html#multi-dimensional-array-api for working with multidimensional
+          arrays.
+        </p>
 
-Vector datacubes, on the other hand, are arrays that have one or more spatial dimensions that maps to a set of 2D vector geometries (either points, lines, or polygons).  As an example consider a time series of precipitation values across hundreds of weather stations, each with their own lat/lon.  You still have a datacube with three dimensions (x, y, time), but the x-y pairs are points (the weather station coordinates) each with a precipitation value, instead of MxN pixels of RGB.   Formats like NetCDF or Zarr are popular for storing this type of multidimensional array data.  GDAL includes a https://gdal.org/api/index.html#multi-dimensional-array-api for working with multidimensional arrays.  
+        <h2>External Resources</h2>
 
-# Relationship between repos
+        STAC Spec - https://github.com/radiantearth/stac-spec/
+        <br />
+        STAC's two main About page's https://stacspec.org/en/about/ and https://stacspec.org/en/about/stac-spec/ STAC Tutorials -
+        https://stacspec.org/en/tutorials/ List of other STAC tutorials out there - https://stacindex.org/learn
+        <br />
+        STAC Browser is a Vue-based browser for STAC catalogs.
+        <br />
+        https://stacindex.org/ecosystem has the full list, but important ones include
+        <br />
 
-https://github.com/zarr-developers/zarr-python
-https://github.com/zarr-developers/VirtualiZarr
+        Python:
+        <ul>
+          <li>PySTAC</li>
+          <li>stactools</li>
+          <li>stac-fastapi and pystac-client</li>
+          <li>pygeoapi has STAC support</li>
+        </ul>
 
+        <br />
 
-# External Resources
+        JavaScript:
+        <ul>
+          <li>stac-js</li>
+          <li>Stack Browser</li>
+          <li>stac-server</li>
+        </ul>
+      </div>
+    </div>
 
-STAC Spec - https://github.com/radiantearth/stac-spec/
-
-STAC's two main About page's https://stacspec.org/en/about/  and  https://stacspec.org/en/about/stac-spec/
-STAC Tutorials - https://stacspec.org/en/tutorials/
-List of other STAC tutorials out there - https://stacindex.org/learn
-
-STAC Browser is a Vue-based browser for STAC catalogs.
-
-https://stacindex.org/ecosystem has the full list, but important ones include
-
-Python:
-- PySTAC
-- stactools
-- stac-fastapi and pystac-client
-- pygeoapi has STAC support
-
-JavaScript:
-- stac-js
-- Stack Browser
-- stac-server
-
+    <footer class="text-muted">
+      <div class="container">
+        <p class="float-right">
+          <a href="#">Back to top</a>
+        </p>
+        <p>Email Marc at x@vt.edu for fixes/suggestions!</p>
+      </div>
+    </footer>
+  </body>
+</html>
