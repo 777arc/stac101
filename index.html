@@ -26,8 +26,16 @@
         <h2 class="jumbotron-heading">STAC101.com</h2>
         <p class="lead text-muted">A single page devoted to explaining STAC in a concise manner for those who are new to STAC</p>
         <p>
-          <a href="#" class="btn btn-primary my-2">STAC Spec</a>
-          <a href="https://stacspec.org/en/" class="btn btn-secondary my-2">stacspec.org</a>
+          <a target="_blank" href="https://stacspec.org/en/" class="btn btn-secondary my-2">stacspec.org</a>
+          <a target="_blank" href="https://github.com/radiantearth/stac-spec/blob/master/item-spec/item-spec.md" class="btn btn-secondary my-2"
+            >STAC Item Spec</a
+          >
+          <a
+            target="_blank"
+            href="https://github.com/radiantearth/stac-spec/blob/master/collection-spec/collection-spec.md"
+            class="btn btn-secondary my-2"
+            >STAC Collection Spec</a
+          >
         </p>
       </div>
     </section>
@@ -56,12 +64,11 @@
         <h2>Asset</h2>
 
         <p>
-        In STAC lingo, an Asset is just a single data file, essentially anything that isn't a piece of STAC metadata. A list of common Asset types
-        include:
-      </p>
-      
-      <p>
-        <ul class="card-columns" style="column-count: 2;">
+          In STAC lingo, an Asset is just a single data file, essentially anything that isn't a piece of STAC metadata. A list of common Asset types
+          include:
+        </p>
+
+        <ul class="card-columns" style="column-count: 2">
           <li>Cloud Optimized GeoTIFF (COG)</li>
           <li>TIFF</li>
           <li>FlatGeobuf</li>
@@ -81,11 +88,8 @@
           <li>XML</li>
           <li>ZARR</li>
         </ul>
-      </p>
 
-      <p>
-        (from https://pystac.readthedocs.io/en/stable/api/media_type.html)
-      </p>
+        <p>(from https://pystac.readthedocs.io/en/stable/api/media_type.html)</p>
 
         <h2>Item</h2>
 
@@ -147,7 +151,7 @@
 </code>
 </pre>
 
-        <h2>STAC Spec Reference:</h2>
+        <h4>STAC Spec Reference:</h4>
         <ul>
           <li>https://github.com/radiantearth/stac-spec/blob/master/item-spec/item-spec.md</li>
           <li>https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md</li>
@@ -275,7 +279,11 @@
           Catalogs into Collections for the sake of display/query.
         </p>
 
-        <p>Go over what a "static catalog" is</p>
+        <p>
+          The term "static catalog" refers to a set of flat files on a web server or cloud object store, whereas a dynamic STAC catalog involves a
+          server generating its responses (e.g., serving the STAC JSON metadata and assets on the fly). Most client libraries are able to treat
+          dynamic and static STAC catalogs the same.
+        </p>
 
         <p>
           <a href="https://github.com/radiantearth/stac-spec/blob/master/catalog-spec/catalog-spec.md">STAC Spec Reference</a>
@@ -379,25 +387,22 @@
           observations, both rasters and vector data.
         </p>
 
+        <h4>Virtual Zarr Store using VirtualiZarr</h4>
+
+        <p>
+          VirtualiZarr is a Python library for creating virtual Zarr stores for cloud-friendly access to archival data, of a variety of formats, using
+          xarray syntax. It started as an alternative to Kerchunk and is relatively new as of late 2024. The basic idea is that the raw data can be
+          kept in a non-zarr format but then manifest and other metadata is kept alongside it to access it as if it was a zarr store. Its repo is
+          under the Zarr Developers organization, making it a community-owned multi-stakeholder project, and Tom Nicholas is one of the main
+          developers/maintainers.
+        </p>
+
         <h2>HDF5</h2>
 
         <p>
           Hierarchical Data Format (HDF) is a set of file formats designed to store and organize large amounts of data. Like many of the other formats
           discussed, HDF5 is self-describing, meaning that the data stored in an HDF5 file includes metadata that describes the structure of the data.
           It's older and tends to be slower than formats like Zarr, especially in a distributed/cloud setting.
-        </p>
-
-        <h2>GDAL</h2>
-
-        <p>
-          Geospatial Data Abstraction Library (GDAL) is a FOSS library for reading and writing raster and vector geospatial data formats, it helps
-          with the translation of data from different file formats, data types, and map projections. The GDAL library is used within both FOSS
-          software (e.g., QGIS) and commercial software (e.g., ESRI ArcGIS). GDAL supports dozens of [raster
-          formats](https://gdal.org/drivers/raster/index.html) and [vector formats](https://gdal.org/drivers/vector/index.html), including GeoTIFF. By
-          using GDAL, you can create software that supports all of these formats; GDAL abstracts the complexities of dealing with various file formats
-          and geospatial data types, and all you have to learn is a single consistent API. GDAL is written in C++ and has bindings for Python, Java,
-          and other languages. GDAL is the backbone of many geospatial software packages, and is used in many cloud services for geospatial data
-          processing. GDAL is also used in many geospatial data processing pipelines, including those that create COGs.
         </p>
 
         <h2>Datacube</h2>
@@ -417,27 +422,56 @@
           arrays.
         </p>
 
-        <h2>External Resources</h2>
-
-        STAC Spec - https://github.com/radiantearth/stac-spec/
-        <br />
-        STAC's two main About page's https://stacspec.org/en/about/ and https://stacspec.org/en/about/stac-spec/ STAC Tutorials -
-        https://stacspec.org/en/tutorials/ List of other STAC tutorials out there - https://stacindex.org/learn
-        <br />
-        STAC Browser is a Vue-based browser for STAC catalogs.
-        <br />
-        https://stacindex.org/ecosystem has the full list, but important ones include
-        <br />
+        <h2>Open Source Ecosystem</h2>
 
         Python:
         <ul>
-          <li>PySTAC</li>
-          <li>stactools</li>
-          <li>stac-fastapi and pystac-client</li>
-          <li>pygeoapi has STAC support</li>
+          <li><a href="https://github.com/stac-utils/pystac">PySTAC</a> - Python library for working with STAC in Python.</li>
+          <li>
+            <a target="_blank" href="https://github.com/stac-utils/stactools">stactools</a> - Command line tool and Python library for working with
+            STAC, based on PySTAC.
+          </li>
+          <li>
+            <a target="_blank" href="https://github.com/stac-utils/stac-fastapi">stac-fastapi</a> - A Python library for building STAC compliant
+            FastAPI applications
+          </li>
+          <li>
+            <a target="_blank" href="https://github.com/stac-utils/pystac-client">pystac-client</a> - A Python client for working with STAC Catalogs
+            and APIs.
+          </li>
+          <li>
+            <a target="_blank" href="https://en.wikipedia.org/wiki/GDAL">GDAL</a> - Geospatial Data Abstraction Library (GDAL) is a FOSS library for
+            reading and writing raster and vector geospatial data formats, it helps with the translation of data from different file formats, data
+            types, and map projections. The GDAL library is used within both FOSS software (e.g., QGIS) and commercial software (e.g., ESRI ArcGIS).
+            GDAL supports dozens of [raster formats](https://gdal.org/drivers/raster/index.html) and [vector
+            formats](https://gdal.org/drivers/vector/index.html), including GeoTIFF. By using GDAL, you can create software that supports all of these
+            formats; GDAL abstracts the complexities of dealing with various file formats and geospatial data types, and all you have to learn is a
+            single consistent API. GDAL is written in C++ and has bindings for Python, Java, and other languages. GDAL is the backbone of many
+            geospatial software packages, and is used in many cloud services for geospatial data processing. GDAL is also used in many geospatial data
+            processing pipelines, including those that create COGs.
+          </li>
+          <li>
+            <a target="_blank" href="https://github.com/developmentseed/titiler">TiTiler</a> - Python library for creating FastAPI applications for
+            dynamic tiling, supporting COGs and STAC. Pronounced tee-tiler, and primarily developed/maintained by Vincent Sarago.
+          </li>
+          <li>
+            <a target="_blank" href="https://github.com/cogeotiff/rio-tiler">rio-tiler</a> - Python library for creating map tiles from large raster
+            data sources (any format supported by Rasterio/GDAL). Primarily developed/maintained by Vincent Sarago
+          </li>
+          <li>
+            <a target="_blank" href="https://github.com/rasterio/rasterio">Rasterio</a> - Reads and writes GeoTIFF and other formats and provides a
+            Python API based on Numpy N-dimensional arrays and GeoJSON. Was created as a better alternative to using GDAL's Python bindings directly.
+            Lead maintainer is Sean Gillies, who is also the lead author of the GeoJSON RFC and contributes to GDAL.
+          </li>
+          <li>
+            <a target="_blank" href="https://github.com/stac-utils/pgstac">PgSTAC</a> - A set of SQL functions, schema, and ingestion capability to
+            build a highly performant Postgres database for STAC. Primarily developed/maintained by David Bitner.
+          </li>
+          <li>
+            <a target="_blank" href="https://github.com/stac-utils/titiler-pgstac">titiler-pgstac</a> - TiTiler extension that connects TiTiler to a
+            PgSTAC database to create dynamic mosaics based on search queries. Primarily developed/maintained by Vincent Sarago.
+          </li>
         </ul>
-
-        <br />
 
         JavaScript:
         <ul>
